@@ -1,0 +1,262 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>キャラクター属性ジェネレーター</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@300;400;500;700&display=swap');
+        body { font-family: 'Noto Sans JP', sans-serif; }
+        .character-card {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            border-radius: 20px;
+            box-shadow: 0 20px 40px rgba(0,0,0,0.1);
+        }
+        .attribute-item {
+            background: rgba(255,255,255,0.95);
+            backdrop-filter: blur(10px);
+            border-radius: 12px;
+            transition: all 0.3s ease;
+        }
+        .attribute-item:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 25px rgba(0,0,0,0.15);
+        }
+        .generate-btn {
+            background: linear-gradient(45deg, #ff6b6b, #feca57);
+            transition: all 0.3s ease;
+        }
+        .generate-btn:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 10px 30px rgba(255,107,107,0.4);
+        }
+    </style>
+</head>
+<body class="min-h-screen bg-gradient-to-br from-purple-400 via-pink-500 to-red-500 p-4">
+    <div class="max-w-4xl mx-auto">
+        <div class="text-center mb-8">
+            <h1 class="text-4xl font-bold text-white mb-4">&#127917; キャラクター属性ジェネレーター</h1>
+            <p class="text-white/80 text-lg">ランダムな属性を組み合わせて、ユニークなキャラクターを作成しよう！</p>
+        </div>
+
+        <div class="text-center mb-8">
+            <button onclick="generateCharacter()" class="generate-btn text-white font-bold py-4 px-8 rounded-full text-xl shadow-lg">
+                &#10024; キャラクター生成 &#10024;
+            </button>
+        </div>
+
+        <div id="characterCard" class="character-card p-8 text-white hidden">
+            <div class="text-center mb-6">
+                <h2 class="text-3xl font-bold mb-2">新しいキャラクター</h2>
+                <div class="text-6xl mb-4" id="characterEmoji">&#127917;</div>
+            </div>
+
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+                <div class="attribute-item p-4">
+                    <div class="flex items-center mb-2">
+                        <span class="text-2xl mr-2">⚧️</span>
+                        <span class="font-semibold text-gray-700">性別</span>
+                    </div>
+                    <div class="text-lg text-gray-800" id="gender">-</div>
+                </div>
+
+                <div class="attribute-item p-4">
+                    <div class="flex items-center mb-2">
+                        <span class="text-2xl mr-2">👤</span>
+                        <span class="font-semibold text-gray-700">体形</span>
+                    </div>
+                    <div class="text-lg text-gray-800" id="bodyType">-</div>
+                </div>
+
+                <div class="attribute-item p-4">
+                    <div class="flex items-center mb-2">
+                        <span class="text-2xl mr-2">🧝</span>
+                        <span class="font-semibold text-gray-700">種族</span>
+                    </div>
+                    <div class="text-lg text-gray-800" id="race">-</div>
+                </div>
+
+                <div class="attribute-item p-4">
+                    <div class="flex items-center mb-2">
+                        <span class="text-2xl mr-2">✨</span>
+                        <span class="font-semibold text-gray-700">長所</span>
+                    </div>
+                    <div class="text-lg text-gray-800" id="strength">-</div>
+                </div>
+
+                <div class="attribute-item p-4">
+                    <div class="flex items-center mb-2">
+                        <span class="text-2xl mr-2">💔</span>
+                        <span class="font-semibold text-gray-700">短所</span>
+                    </div>
+                    <div class="text-lg text-gray-800" id="weakness">-</div>
+                </div>
+
+                <div class="attribute-item p-4">
+                    <div class="flex items-center mb-2">
+                        <span class="text-2xl mr-2">❤️</span>
+                        <span class="font-semibold text-gray-700">好きなもの</span>
+                    </div>
+                    <div class="text-lg text-gray-800" id="likes">-</div>
+                </div>
+
+<div class="attribute-item p-4">
+    <div class="flex items-center mb-2">
+        <span class="text-2xl mr-2">&#128078;</span>
+        <span class="font-semibold text-gray-700">嫌い・苦手なもの</span>
+    </div>
+    <div class="text-lg text-gray-800" id="dislikes">-</div>
+</div>
+
+
+                <div class="attribute-item p-4">
+                    <div class="flex items-center mb-2">
+                        <span class="text-2xl mr-2">⚔️</span>
+                        <span class="font-semibold text-gray-700">武器</span>
+                    </div>
+                    <div class="text-lg text-gray-800" id="weapon">-</div>
+                </div>
+
+                <div class="attribute-item p-4">
+                    <div class="flex items-center mb-2">
+                        <span class="text-2xl mr-2">🔮</span>
+                        <span class="font-semibold text-gray-700">能力</span>
+                    </div>
+                    <div class="text-lg text-gray-800" id="ability">-</div>
+                </div>
+
+                <div class="attribute-item p-4">
+                    <div class="flex items-center mb-2">
+                        <span class="text-2xl mr-2">💕</span>
+                        <span class="font-semibold text-gray-700">好きなタイプ</span>
+                    </div>
+                    <div class="text-lg text-gray-800" id="likedType">-</div>
+                </div>
+
+                <div class="attribute-item p-4">
+                    <div class="flex items-center mb-2">
+                        <span class="text-2xl mr-2">💢</span>
+                        <span class="font-semibold text-gray-700">嫌いなタイプ</span>
+                    </div>
+                    <div class="text-lg text-gray-800" id="dislikedType">-</div>
+                </div>
+
+                <div class="attribute-item p-4">
+                    <div class="flex items-center mb-2">
+                        <span class="text-2xl mr-2">🎨</span>
+                        <span class="font-semibold text-gray-700">趣味</span>
+                    </div>
+                    <div class="text-lg text-gray-800" id="hobby">-</div>
+                </div>
+
+                <div class="attribute-item p-4">
+                    <div class="flex items-center mb-2">
+                        <span class="text-2xl mr-2">🎂</span>
+                        <span class="font-semibold text-gray-700">誕生日</span>
+                    </div>
+                    <div class="text-lg text-gray-800" id="birthday">-</div>
+                </div>
+
+                <div class="attribute-item p-4">
+                    <div class="flex items-center mb-2">
+                        <span class="text-2xl mr-2">🩸</span>
+                        <span class="font-semibold text-gray-700">血液型</span>
+                    </div>
+                    <div class="text-lg text-gray-800" id="bloodType">-</div>
+                </div>
+
+                <div class="attribute-item p-4">
+                    <div class="flex items-center mb-2">
+                        <span class="text-2xl mr-2">💼</span>
+                        <span class="font-semibold text-gray-700">職業</span>
+                    </div>
+                    <div class="text-lg text-gray-800" id="occupation">-</div>
+                </div>
+
+
+            </div>
+        </div>
+    </div>
+
+    <script>
+        const characterData = {
+            genders: ['男性', '女性', 'ノンバイナリー', '不明'],
+            bodyTypes: ['スリム', 'アスリート体型', 'ふくよか', '筋肉質', '小柄', '長身', '平均的'],
+            races: ['人間', 'エルフ', 'ドワーフ', 'ハーフリング', 'オーク', 'ドラゴンボーン', '天使', '悪魔', '獣人', 'フェアリー'],
+            strengths: ['勇敢', '優しい', '知的', '忠実', '創造的', '冷静', '情熱的', '責任感が強い', 'ユーモアがある', '協調性がある'],
+            weaknesses: ['短気', '頑固', '優柔不断', '心配性', '完璧主義', '人見知り', 'せっかち', '負けず嫌い', '飽きっぽい', '疑い深い'],
+            likes: ['甘いもの', '読書', '音楽', '自然', '動物', '冒険', '料理', 'アート', 'スポーツ', '静寂'],
+            weapons: ['剣', '弓', '杖', 'ダガー', 'ハンマー', '槍', '魔法書', '盾', '鞭', '素手'],
+            abilities: ['火魔法', '水魔法', '風魔法', '土魔法', '治癒魔法', 'テレパシー', '透明化', '飛行', '超人的な力', '予知能力'],
+            likedTypes: ['優しい人', '面白い人', '頼りになる人', '知的な人', '冒険好きな人', '芸術的な人', '料理上手な人', '動物好きな人', '本好きな人', '運動好きな人','明るい人', '素直な人', '努力家', '思いやりがある人', '正直な人', '積極的な人', '穏やかな人', '謙虚な人', '包容力がある人', '純粋な人', '真面目な人', '気配りができる人', '前向きな人', '誠実な人', '温厚な人'],
+            dislikedTypes: ['嘘つき', '自己中心的な人', '暴力的な人', '無責任な人', 'ネガティブな人', '約束を破る人', '騒がしい人', '批判的な人', '怠惰な人', '偏見を持つ人','高慢な人', '陰湿な人', '八方美人', '計算高い人', '見栄っ張り', '口だけの人', '愚痴っぽい人', '束縛する人', '裏表がある人', '短絡的な人', '依存的な人', '攻撃的な人', '冷酷な人', '軽薄な人', '執念深い人'],
+            hobbies: ['読書', '絵画', '音楽', 'ガーデニング', '料理', '旅行', 'ゲーム', '写真', 'ダンス', '瞑想','映画鑑賞', 'アニメ鑑賞', '散歩', 'ジョギング', '筋トレ', 'ヨガ', '釣り', 'キャンプ', '登山', 'サイクリング', '水泳', 'スケート', 'スキー', 'サーフィン', '楽器演奏', '歌唱', '作詞作曲', '手芸', '編み物', '裁縫', '陶芸', '木工', '彫刻', '書道', '茶道', '華道', 'コレクション', 'パズル', 'ボードゲーム', 'カードゲーム', 'テレビゲーム', 'プログラミング', 'ブログ執筆', '日記', '詩作', '小説執筆', '語学学習', '資格取得', '天体観測', '占い', 'マジック', 'コスプレ', 'ファッション', 'メイク', 'ネイルアート', 'インテリア', 'DIY'],
+            bloodTypes: ['A型', 'B型', 'O型', 'AB型'],
+            occupations: ['騎士', '魔法使い', '商人', '盗賊', '僧侶', '吟遊詩人', '錬金術師', '冒険者', '学者', '職人','戦士', '弓兵', '暗殺者', '忍者', '侍', '剣闘士', '聖騎士', '僧兵', '司祭', '神官', '巫女', 'シャーマン', '賢者', '魔術師', '召喚師', '占い師', '予言者', '治療師', '薬師', '医師', '看護師', '教師', '学者', '研究者', '図書館司書', '作家', '詩人', '画家', '彫刻家', '音楽家', '踊り子', '俳優', '道化師', '商人', '行商人', '宿屋の主人', '料理人', 'パン屋', '鍛冶屋', '武器職人', '防具職人', '宝石商', '仕立て屋', '靴職人', '大工', '石工', '農民', '牧場主', '漁師', '猟師', '探検家', '冒険者', '傭兵', '衛兵', '船長', '海賊', '盗賊', 'スパイ', '外交官', '貴族', '王族', '領主', '執事', 'メイド', '庭師', '馬丁', '御者'],
+
+dislikes: ['辛いもの', '虫', '高いところ', '暗闇', '騒音', '人混み', '雨', '寒さ', '暑さ', '早起き', '運動', '勉強', '掃除', '料理', '血', '注射', '病院', 'お化け', '雷', '地震','ゴキブリ', 'クモ', 'ヘビ', 'ネズミ', '犬', '猫', '魚', '納豆', 'チーズ', 'キノコ', 'ピーマン', 'ニンジン', 'セロリ', 'パクチー', 'コーヒー', 'お酒', '牛乳', '炭酸飲料', '甘いもの', '酸っぱいもの', '苦いもの', '油っこいもの', '生もの', '冷たいもの', '熱いもの', '満員電車', 'エレベーター', '狭い場所', '広すぎる場所', '鏡', '写真撮影', '電話', 'メール', 'SNS', 'テレビ', '音楽', '歌', 'ダンス', 'スポーツ', '競争', '試験', '面接', '会議', 'プレゼン', '人前で話すこと', '注目されること', '褒められること', '怒られること', '待つこと', '急かされること', '変化', 'ルーティン', '計画', '予定変更', '遅刻', '忘れ物', '失敗', '間違い', '恥ずかしい思い', '孤独', '集団行動', '規則', '束縛', '責任', 'プレッシャー'],
+
+
+            emojis: ['&#129497;', '&#128481;', '&#127993;', '&#128737;', '&#9876;', '&#128302;', '&#10024;', '&#127775;', '&#128171;', '&#127917;', '&#128081;', '&#129412;', '&#128009;', '&#11088;']
+        };
+
+        function getRandomItem(array) {
+            return array[Math.floor(Math.random() * array.length)];
+        }
+
+        function generateBirthday() {
+            const months = ['1月', '2月', '3月', '4月', '5月', '6月', '7月', '8月', '9月', '10月', '11月', '12月'];
+            const month = getRandomItem(months);
+            const day = Math.floor(Math.random() * 28) + 1;
+            return `${month}${day}日`;
+        }
+
+        function generateCharacter() {
+            const character = {
+                gender: getRandomItem(characterData.genders),
+                bodyType: getRandomItem(characterData.bodyTypes),
+                race: getRandomItem(characterData.races),
+                strength: getRandomItem(characterData.strengths),
+                weakness: getRandomItem(characterData.weaknesses),
+                likes: getRandomItem(characterData.likes),
+                weapon: getRandomItem(characterData.weapons),
+                ability: getRandomItem(characterData.abilities),
+                likedType: getRandomItem(characterData.likedTypes),
+                dislikedType: getRandomItem(characterData.dislikedTypes),
+                hobby: getRandomItem(characterData.hobbies),
+                birthday: generateBirthday(),
+                bloodType: getRandomItem(characterData.bloodTypes),
+                occupation: getRandomItem(characterData.occupations),
+dislikes: getRandomItem(characterData.dislikes),
+            };
+
+            // Update the character card
+            document.getElementById('gender').textContent = character.gender;
+            document.getElementById('bodyType').textContent = character.bodyType;
+            document.getElementById('race').textContent = character.race;
+            document.getElementById('strength').textContent = character.strength;
+            document.getElementById('weakness').textContent = character.weakness;
+            document.getElementById('likes').textContent = character.likes;
+            document.getElementById('weapon').textContent = character.weapon;
+            document.getElementById('ability').textContent = character.ability;
+            document.getElementById('likedType').textContent = character.likedType;
+            document.getElementById('dislikedType').textContent = character.dislikedType;
+            document.getElementById('hobby').textContent = character.hobby;
+            document.getElementById('birthday').textContent = character.birthday;
+            document.getElementById('bloodType').textContent = character.bloodType;
+            document.getElementById('occupation').textContent = character.occupation;
+document.getElementById('dislikes').textContent = character.dislikes;
+
+            // Update emoji
+            document.getElementById('characterEmoji').innerHTML = getRandomItem(characterData.emojis);
+
+            // Show the character card
+            document.getElementById('characterCard').classList.remove('hidden');
+            
+            // Smooth scroll to the character card
+            document.getElementById('characterCard').scrollIntoView({ behavior: 'smooth' });
+        }
+    </script>
+<script>(function(){function c(){var b=a.contentDocument||a.contentWindow.document;if(b){var d=b.createElement('script');d.innerHTML="window.__CF$cv$params={r:'9769686d022bd5f9',t:'MTc1NjQ0MjgyMS4wMDAwMDA='};var a=document.createElement('script');a.nonce='';a.src='/cdn-cgi/challenge-platform/scripts/jsd/main.js';document.getElementsByTagName('head')[0].appendChild(a);";b.getElementsByTagName('head')[0].appendChild(d)}}if(document.body){var a=document.createElement('iframe');a.height=1;a.width=1;a.style.position='absolute';a.style.top=0;a.style.left=0;a.style.border='none';a.style.visibility='hidden';document.body.appendChild(a);if('loading'!==document.readyState)c();else if(window.addEventListener)document.addEventListener('DOMContentLoaded',c);else{var e=document.onreadystatechange||function(){};document.onreadystatechange=function(b){e(b);'loading'!==document.readyState&&(document.onreadystatechange=e,c())}}}})();</script></body>
+</html>

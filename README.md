@@ -1,1 +1,1 @@
-randam character maker
+random character maker
